@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta METAR</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            text-align: center;
+            padding: 50px;
+        }
+        input {
+            width: 200px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Consulta METAR</h1>
+        <input type="text" id="icaoCode" placeholder="Informe o código ICAO">
+        <button onclick="consultarMetar()">Consultar</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        function consultarMetar() {
+            const icaoCode = document.getElementById("icaoCode").value;
+            const url = `https://api-redemet.decea.mil.br/mensagens/metar/${icaoCode}?api_key=rGjZ6pufzhrDUrU9CRB19y2jbCWlN3caOzG7yz4p&data_ini=2019010100&data_fim=2019010101`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const metar = data[0].metar;
+                    document.getElementById("resultado").innerHTML = `<p>${metar}</p>`;
+                })
+                .catch(error => {
+                    console.error("Erro na consulta:", error);
+                    document.getElementById("resultado").innerHTML = "<p>Erro ao consultar METAR.</p>";
+                });
+        }
+    </script>
+</body>
+</html>
